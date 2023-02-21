@@ -2,7 +2,7 @@
   "expo": {
     "name": "더한다",
     "slug": "multiculture-app-expo",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.zzsoft.thehanda",
-      "buildNumber": "1.0.2"
+      "buildNumber": "1.0.3"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,10 +28,15 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.zzsoft.thehanda",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0030129a-361d-4218-bff1-e11b66ea7325"
+      }
     }
   }
 }

@@ -1,16 +1,20 @@
 import React,{useCallback, useEffect, useState} from 'react';
-import { StyleSheet, Text, View,Platform } from 'react-native';
+import { StyleSheet, Text, TextInput, View,Platform } from 'react-native';
 import Browser from "./components/Browser"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import * as SplashScreen from 'expo-splash-screen';
+
+
 
 export default function App() {
 
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
+    
     async function prepare() {
       try {
+
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync();
         // Pre-load fonts, make any API calls you need to do here

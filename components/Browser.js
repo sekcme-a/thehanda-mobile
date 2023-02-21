@@ -25,7 +25,7 @@ const Browser = () => {
   // const URL = "http://192.168.43.38:3000/"
   const [location, setLocation] = useState([""]);
   const [canGoBack, setCanGoBack] = useState(false)
-  const [his,setHis] = useState([])
+  const [his, setHis] = useState([])
   let history = [""];
   let time = 0;
 
@@ -36,12 +36,12 @@ const Browser = () => {
 
   const onPressHardwareBackButton = () => {
     console.log(his)
-    console.log(his[his.length-1])
+    console.log(his[his.length - 1])
     if (his[his.length - 1] === `${URL}/` || his.length === 1) {
       time += 1;
       ToastAndroid.show("'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", ToastAndroid.SHORT);
       if (time === 1) {
-        setTimeout(()=> time = 0, 2000)
+        setTimeout(() => time = 0, 2000)
       } else if (time === 2) {
         BackHandler.exitApp();
         return false;
@@ -84,76 +84,76 @@ const Browser = () => {
 
 
   //***********************notification부분***************************/
-	const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState();
   const [pushToken, setPushToken] = useState("")
-	const notificationListener = useRef();
+  const notificationListener = useRef();
   const responseListener = useRef();
   
   const [test, setTest] = useState("")
  
-	useEffect(() => {
-		registerForPushNotificationsAsync().then(token => {
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => {
       setExpoPushToken(token);
       setTest(token)
-		});
+    });
 	
-		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-			setNotification(notification);
-		});
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
 	
-		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-			console.log(response);
-		});
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
 	
-		return () => {
-			if(typeof notificationListener.current !== 'undefined' && typeof responseListener.current !== 'undefined'){
-				Notifications.removeNotificationSubscription(notificationListener.current);
-				Notifications.removeNotificationSubscription(responseListener.current);
-			}
-		};
+    return () => {
+      if (typeof notificationListener.current !== 'undefined' && typeof responseListener.current !== 'undefined') {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
+      }
+    };
   }, []);
   
   async function registerForPushNotificationsAsync() {
-	let token;
-	if (Device.isDevice) {
-		const { status: existingStatus } = await Notifications.getPermissionsAsync();
-		let finalStatus = existingStatus;
-		if (existingStatus !== 'granted') {
-			const { status } = await Notifications.requestPermissionsAsync();
-			finalStatus = status;
-		}
-		if (finalStatus !== 'granted') {
-			// alert('Failed to get push token for push notification!');
-			return;
-		}
-		token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-    setPushToken(token)
-    webview.current.postMessage(token)
-	} else {
-		// alert('Must use physical device for Push Notifications');
-	}
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        // alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+      setPushToken(token)
+      webview.current.postMessage(token)
+    } else {
+      // alert('Must use physical device for Push Notifications');
+    }
 
-	if (Platform.OS === 'android') {
-		Notifications.setNotificationChannelAsync('default', {
-			name: 'default',
-			importance: Notifications.AndroidImportance.MAX,
-			vibrationPattern: [0, 250, 250, 250],
-			lightColor: '#FF231F7C',
-		});
-	}
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
 
-	return token;
+    return token;
   }
 
 
-	const handleMessage = event => {
-    const { nativeEvent: {data} } = event;
+  const handleMessage = event => {
+    const { nativeEvent: { data } } = event;
     console.log(`data:${data}`)
     if (data.includes("UID_DATA: ")) {
       const temp = data.split("UID_DATA: ")
-      db.collection("users").doc(temp[1]).update({pushToken: pushToken})
+      db.collection("users").doc(temp[1]).update({ pushToken: pushToken })
     }
     
   };
@@ -166,7 +166,7 @@ const Browser = () => {
         uri: URL,
       }}
       userAgent='customuseragent'
-      
+      textZoom={100}
       injectedJavaScript={`
         (function() {
           function wrap(fn) {
